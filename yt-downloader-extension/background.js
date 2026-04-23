@@ -15,11 +15,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.type === 'DOWNLOAD_CLICKED') {
-    handleQuickDownload(message.url, message.title);
+    handleQuickDownload(message.url, message.title, message.quality, message.downloadType);
   }
 });
 
-async function handleQuickDownload(url, title) {
+async function handleQuickDownload(url, title, quality, type) {
   const SERVER_URL = 'http://localhost:9000';
   try {
     const resp = await fetch(`${SERVER_URL}/download`, {
@@ -27,8 +27,8 @@ async function handleQuickDownload(url, title) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         url: url,
-        type: 'video',
-        quality: '1080',
+        type: type || 'video',
+        quality: quality || '1080',
         isPlaylist: false
       })
     });
