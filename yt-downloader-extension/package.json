@@ -1,0 +1,15 @@
+{
+  "name": "yt-downloader-extension",
+  "version": "1.0.0",
+  "description": "YouTube Downloader with local Node.js backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "powershell -ExecutionPolicy Bypass -File setup.ps1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-id3": "^0.2.9"
+  }
+}
