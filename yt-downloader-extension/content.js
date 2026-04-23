@@ -58,22 +58,82 @@
     downloadBtn.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      // Notify background to handle the download or open popup
-      chrome.runtime.sendMessage({ 
-        type: 'DOWNLOAD_CLICKED', 
-        url: window.location.href,
-        title: getVideoData().title 
-      });
-      
-      // Visual feedback
-      const span = downloadBtn.querySelector('span');
-      const oldText = span.textContent;
-      span.textContent = 'Starting...';
-      setTimeout(() => span.textContent = oldText, 2000);
+      showQualityMenu(downloadBtn);
     };
 
     menu.appendChild(downloadBtn);
+  }
+
+  function showQualityMenu(anchor) {
+    const existingMenu = document.querySelector('#ytdl-quality-menu');
+    if (existingMenu) {
+      existingMenu.remove();
+      return;
+    }
+
+    const menu = document.createElement('div');
+    menu.id = 'ytdl-quality-menu';
+    const rect = anchor.getBoundingClientRect();
+    
+    menu.style.cssText = `
+      position: fixed;
+      top: ${rect.bottom + 8}px;
+      left: ${rect.left}px;
+      background: #282828;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 0;
+      z-index: 9999;
+      min-width: 140px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      font-family: "Roboto", "Arial", sans-serif;
+    `;
+
+    const options = [
+      { label: 'Video 1080p', type: 'video', quality: '1080' },
+      { label: 'Video 720p', type: 'video', quality: '720' },
+      { label: 'Video 480p', type: 'video', quality: '480' },
+      { label: 'Audio MP3', type: 'audio', quality: '320' }
+    ];
+
+    options.forEach(opt => {
+      const item = document.createElement('div');
+      item.style.cssText = `
+        padding: 10px 16px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 14px;
+        transition: background 0.2s;
+      `;
+      item.textContent = opt.label;
+      
+      item.onmouseover = () => item.style.background = 'rgba(255, 255, 255, 0.1)';
+      item.onmouseout = () => item.style.background = 'transparent';
+      
+      item.onclick = () => {
+        chrome.runtime.sendMessage({ 
+          type: 'DOWNLOAD_CLICKED', 
+          url: window.location.href,
+          title: getVideoData().title,
+          quality: opt.quality,
+          downloadType: opt.type
+        });
+        menu.remove();
+      };
+      
+      menu.appendChild(item);
+    });
+
+    document.body.appendChild(menu);
+
+    // Close on click outside
+    const closeMenu = (e) => {
+      if (!menu.contains(e.target) && e.target !== anchor) {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeMenu), 10);
   }
 
   // Observer to handle dynamic content loading
