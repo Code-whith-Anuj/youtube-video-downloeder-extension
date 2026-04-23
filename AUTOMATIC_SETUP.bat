@@ -38,5 +38,11 @@ echo ======================================================
 echo  1. Restart your PC (or terminal) to apply PATH changes.
 echo  2. Run 'start_server.bat' in the extension folder.
 echo  3. Load the extension in Chrome (Developer Mode).
+echo  4. Run 'auto_sync.ps1' to automatically push to GitHub.
 echo ======================================================
+echo.
+set /p sync="Do you want to start Auto-Sync now? (y/n): "
+if /i "%sync%"=="y" (
+    start powershell.exe -NoExit -ExecutionPolicy Bypass -File "%~dp0auto_sync.ps1"
+)
 pause
