@@ -112,5 +112,3 @@ Disclaimer
 
 This tool is for personal use only. Users must comply with copyright
 laws and YouTube Terms of Service.
-
-hi
