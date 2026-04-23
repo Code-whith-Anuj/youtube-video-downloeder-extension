@@ -13,4 +13,42 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
     return true; // async
   }
+
+  if (message.type === 'DOWNLOAD_CLICKED') {
+    handleQuickDownload(message.url, message.title);
+  }
 });
+
+async function handleQuickDownload(url, title) {
+  const SERVER_URL = 'http://localhost:9000';
+  try {
+    const resp = await fetch(`${SERVER_URL}/download`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: url,
+        type: 'video',
+        quality: '1080',
+        isPlaylist: false
+      })
+    });
+
+    if (resp.ok) {
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'icons/icon128.png',
+        title: 'Download Started',
+        message: `Started downloading: ${title}`
+      });
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (e) {
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: 'icons/icon128.png',
+      title: 'Download Error',
+      message: 'Could not connect to the local server. Is start_server.bat running?'
+    });
+  }
+}
