@@ -31,6 +31,7 @@ const serverBtnStatus = document.getElementById('serverBtnStatus');
 
 // New UI Elements
 const settingsBtn = document.getElementById('settingsBtn');
+const githubBtn = document.getElementById('githubBtn');
 const settingsModal = document.getElementById('settingsModal');
 const closeSettings = document.getElementById('closeSettings');
 const downloadDirInput = document.getElementById('downloadDirInput');
@@ -395,6 +396,11 @@ function bindEvents() {
       console.warn('Could not fetch settings');
     }
     settingsModal.style.display = 'flex';
+  });
+
+  // GitHub Link
+  githubBtn.addEventListener('click', () => {
+    chrome.tabs.create({ url: 'https://github.com/Code-whith-Anuj/youtube-video-downloeder-extension' });
   });
 
   closeSettings.addEventListener('click', () => {

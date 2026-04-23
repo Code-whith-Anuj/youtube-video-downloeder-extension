@@ -108,7 +108,19 @@ To change: - Open extension settings
 
 ------------------------------------------------------------------------
 
-Disclaimer
+------------------------------------------------------------------------
+ 
++Contributing & Editing
++
++This project is open-source. To suggest improvements or edit the code:
++1.  Visit the [GitHub Repository](https://github.com/Code-whith-Anuj/youtube-video-downloeder-extension)
++2.  Click the **Fork** button
++3.  Make your changes and submit a **Pull Request**
++4.  Alternatively, use the **GitHub Web Editor** by pressing `.` while viewing the repository.
++
++------------------------------------------------------------------------
++
+ Disclaimer
 
 This tool is for personal use only. Users must comply with copyright
 laws and YouTube Terms of Service.
